@@ -1,0 +1,106 @@
+@page
+@using FooCompany.Statistics.Pages
+@model IndexModel
+
+@{
+    ViewData["Title"] = "FooCompany Statistics";
+}
+
+<h3>FooCompany Statistics</h3>
+
+<form asp-page="./Index" method="post">
+    <div class="form-actions no-color">
+        <p>
+            Filter by dates:
+            @Html.TextBoxFor(model => model.FilterFrom, "{0:yyyy-MM-dd}", new { type = "date" })
+            @Html.TextBoxFor(model => model.FilterTo, "{0:yyyy-MM-dd}", new { type = "date" })
+            <input type="submit" value="Filter" class="btn btn-default" />
+            <a asp-page="./Index">Clear filter</a>
+        </p>
+    </div>
+</form>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalSms)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalSms)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalCallDurationFormatted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalCallDurationFormatted)
+        </dd>
+    </dl>
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Top MSISDNs by Call duration
+                </th>
+                <th>
+                    Duration of Calls
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.TopCallMsisdns.Any())
+            {
+                foreach (var item in Model.TopCallMsisdns)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Msisdn)
+                    </td>
+                    <td align="left">
+                        @Html.DisplayFor(modelItem => item.CallDurationFormatted)
+                    </td>
+                </tr>
+                }
+            }
+            else
+            {
+                <tr><td>No calls were made during selected period.</td></tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Top MSISDNs by SMS count
+                </th>
+                <th>
+                    SMS Count
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.TopSmsMsisdns.Any())
+            {
+                foreach (var item in Model.TopSmsMsisdns)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Msisdn)
+                    </td>
+                    <td align="left">
+                        @Html.DisplayFor(modelItem => item.SmsCount)
+                    </td>
+                </tr> 
+                }
+            }
+            else
+            {
+                <tr><td>No SMSs were sent during selected period.</td></tr>
+            }
+        </tbody>
+    </table>
+</div>
